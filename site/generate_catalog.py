@@ -10,10 +10,10 @@ from PIL import Image
 from rapidfuzz import fuzz
 from rapidocr_onnxruntime import RapidOCR
 
-BASE = Path('/home/hellsman/.openclaw/workspace/tmp/tis')
-TABLES_DIR = BASE / 'tables_md'
-PAGES_DIR = BASE / 'pages'
-SITE_DIR = BASE / 'site'
+SITE_DIR = Path(__file__).resolve().parent
+SOURCE_BASE = Path((__import__('os').environ.get('TIS_SOURCE_BASE') or (SITE_DIR.parent / 'variants' / '2_0_turbo' / 'raw'))).resolve()
+TABLES_DIR = SOURCE_BASE / 'tables_md'
+PAGES_DIR = SOURCE_BASE / 'pages'
 DATA_DIR = SITE_DIR / 'data'
 ASSETS_PAGES_DIR = SITE_DIR / 'assets' / 'pages'
 
@@ -355,7 +355,7 @@ def main():
         )
 
     catalog = {
-        'source_base': str(BASE),
+        'source_base': str(SOURCE_BASE.relative_to(SITE_DIR.parent.parent)) if SOURCE_BASE.is_relative_to(SITE_DIR.parent.parent) else str(SOURCE_BASE),
         'document_count': len(result_docs),
         'documents': result_docs,
     }
