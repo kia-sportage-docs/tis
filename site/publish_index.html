@@ -37,6 +37,7 @@
               <div id="docMeta" class="meta"></div>
             </div>
             <div class="toolbar-actions toolbar-actions--publish">
+              <button id="openDocTableButton" type="button">Таблица схемы</button>
               <div id="saveStatus" class="meta">Read-only publish version</div>
             </div>
           </div>
@@ -62,6 +63,20 @@
           </div>
         </section>
       </main>
+    </div>
+  </div>
+
+  <div id="docTableModal" class="modal" hidden>
+    <div class="modal-backdrop" data-close-modal="doc-table"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <div class="section-title">Таблица схемы</div>
+          <div id="docTableTitle" class="meta">—</div>
+        </div>
+        <button id="closeDocTableButton" type="button">Закрыть</button>
+      </div>
+      <div id="docTableContainer" class="modal-body"></div>
     </div>
   </div>
 
