@@ -22,3 +22,7 @@ site/server.log
 # OS/editor noise
 .DS_Store
 Thumbs.db
+
+# VS Code
+.vscode/
+*.code-workspace
