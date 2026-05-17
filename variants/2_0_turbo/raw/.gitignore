@@ -1,0 +1,7 @@
+site/.venv/
+site/__pycache__/
+site/server.log
+site/generation.log
+site/data/overrides.local.json
+*.pyc
+.DS_Store

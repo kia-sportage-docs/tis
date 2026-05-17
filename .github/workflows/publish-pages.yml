@@ -1,0 +1,44 @@
+name: Build and publish app
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-publish:
+    name: Build publish directory and push to publish-app
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies if present
+        run: |
+          if [ -f requirements.txt ]; then
+            python -m pip install -r requirements.txt
+          elif [ -f site/requirements.txt ]; then
+            python -m pip install -r site/requirements.txt
+          fi
+
+      - name: Build publish directory
+        run: python site/build_publish.py
+
+      - name: Publish to publish-app branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./publish
+          publish_branch: publish-app
+          force_orphan: true

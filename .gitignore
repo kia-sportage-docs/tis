@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Local virtualenv
+site/.venv/
+
+# Logs
+generation.log
+server.log
+site/generation.log
+site/server.log
+
+# Local build output
+publish/
+
+# Backup and temporary files
+*.bak
+*.bak-*
+*.bak.*
+
+# OS/editor noise
+.DS_Store
+Thumbs.db

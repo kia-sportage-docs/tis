@@ -1,0 +1,20 @@
+{
+  "variants": [
+    {
+      "id": "2_0_turbo",
+      "title": "KIA Sportage NQ5c — 2.0 Turbo",
+      "engine": "2.0 Turbo",
+      "catalogPath": "data/catalogs/2_0_turbo.catalog.json",
+      "overridesPath": "data/overrides/2_0_turbo.overrides.json",
+      "assetsBase": "assets/variants/2_0_turbo"
+    },
+    {
+      "id": "1_5_turbo",
+      "title": "KIA Sportage NQ5c — 1.5 Turbo",
+      "engine": "1.5 Turbo",
+      "catalogPath": "data/catalogs/1_5_turbo.catalog.json",
+      "overridesPath": "data/overrides/1_5_turbo.overrides.json",
+      "assetsBase": "assets/variants/1_5_turbo"
+    }
+  ]
+}

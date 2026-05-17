@@ -1,0 +1,301 @@
+:root {
+  color-scheme: light;
+  --bg: #f5f7fb;
+  --panel: #ffffff;
+  --line: #d9dfeb;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --accent-soft: rgba(37, 99, 235, 0.14);
+  --warn: #b45309;
+  --danger: #b91c1c;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+button, input, select {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
+.app {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  min-height: 100vh;
+}
+.sidebar, .viewer-panel, .details-panel {
+  background: var(--panel);
+}
+.sidebar {
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
+}
+.sidebar-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  background: var(--panel);
+  z-index: 2;
+}
+.sidebar-header h1 { margin: 0 0 12px; font-size: 20px; }
+#searchInput,
+.editor-toolbar input,
+.editor-toolbar select,
+.marker-editor input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: white;
+}
+.summary, .meta, .hint { color: var(--muted); font-size: 13px; }
+.summary { margin-top: 10px; }
+.doc-list {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 8px;
+  flex: 1 1 auto;
+  min-height: 0;
+  scrollbar-gutter: stable;
+}
+.doc-item {
+  width: 100%; text-align: left; padding: 12px; border: 1px solid var(--line); border-radius: 12px;
+  background: white; margin-bottom: 8px;
+}
+.doc-item.active { border-color: var(--accent); background: #eff6ff; }
+.doc-item-title { font-weight: 600; margin-bottom: 4px; }
+.doc-item-stats { font-size: 12px; color: var(--muted); }
+.main {
+  display: grid;
+  grid-template-rows: minmax(480px, 1fr) 360px;
+  gap: 12px;
+  padding: 12px;
+}
+.viewer-panel, .details-panel {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.viewer-toolbar, .details-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.viewer-toolbar h2, .details-header h3 { margin: 0; }
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.toggle {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 14px;
+}
+#saveButton,
+#undoButton,
+#redoButton,
+#deleteMarkerButton {
+  border: 1px solid var(--line);
+  background: white;
+  padding: 10px 14px;
+  border-radius: 10px;
+}
+#deleteMarkerButton {
+  color: var(--danger);
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+#undoButton:disabled,
+#redoButton:disabled,
+#saveButton:disabled,
+#deleteMarkerButton:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.editor-toolbar {
+  display: grid;
+  grid-template-columns: 1.2fr 1.4fr 0.9fr;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  background: #f8fafc;
+}
+.editor-group.actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.field-label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.viewer {
+  position: relative;
+  overflow: auto;
+  background: #f8fafc;
+  min-height: 0;
+}
+#schemeImage {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.overlay {
+  position: absolute;
+  inset: 0 auto auto 0;
+  pointer-events: none;
+}
+body.edit-mode .overlay {
+  pointer-events: auto;
+  cursor: crosshair;
+}
+.marker {
+  position: absolute;
+  border: 2px solid #dc2626;
+  background: rgba(220, 38, 38, 0.16);
+  color: #7f1d1d;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 6px;
+  pointer-events: auto;
+  touch-action: none;
+}
+.marker.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.resize-handle {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--accent);
+  border: 2px solid white;
+}
+.rows-container, .unmatched-container {
+  padding: 16px;
+  overflow: auto;
+}
+.rows-table {
+  width: 100%; border-collapse: collapse;
+}
+.rows-table th, .rows-table td {
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  padding: 8px;
+  vertical-align: top;
+}
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+}
+.details-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  min-height: 0;
+  height: 100%;
+}
+.details-column {
+  min-width: 0;
+  overflow: auto;
+}
+.marker-editor {
+  border-left: 1px solid var(--line);
+  padding: 16px;
+  background: #fcfcfd;
+  overflow: auto;
+}
+.coords-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 8px;
+}
+.coords-grid label span {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.section-title {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.section-title.small {
+  margin-top: 14px;
+}
+.unmatched-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
+}
+.unmatched-card {
+  border: 1px dashed #f59e0b;
+  padding: 10px;
+  border-radius: 10px;
+  background: #fffbeb;
+  text-align: left;
+}
+.unmatched-card.selected {
+  border-style: solid;
+  border-color: var(--accent);
+  background: #eff6ff;
+}
+.marker-rows-preview {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+}
+.empty {
+  color: var(--muted);
+  padding: 20px 0;
+}
+@media (max-width: 1280px) {
+  .editor-toolbar {
+    grid-template-columns: 1fr;
+  }
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+  .marker-editor {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+}
+@media (max-width: 1080px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar {
+    min-height: auto;
+    height: auto;
+    max-height: 45vh;
+  }
+  .main { grid-template-rows: auto auto; }
+}

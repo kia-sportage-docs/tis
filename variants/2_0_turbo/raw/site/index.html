@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TIS Parts Catalog Prototype</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h1>TIS каталог</h1>
+        <input id="searchInput" type="search" placeholder="Поиск по названию/коду" />
+        <div id="summary" class="summary">Загрузка...</div>
+      </div>
+      <div id="docList" class="doc-list"></div>
+    </aside>
+
+    <main class="main">
+      <section class="viewer-panel">
+        <div class="viewer-toolbar">
+          <div>
+            <h2 id="docTitle">—</h2>
+            <div id="docMeta" class="meta"></div>
+          </div>
+          <div class="toolbar-actions">
+            <label class="toggle">
+              <input id="editToggle" type="checkbox" />
+              <span>Edit mode</span>
+            </label>
+            <button id="undoButton" type="button">Undo</button>
+            <button id="redoButton" type="button">Redo</button>
+            <button id="saveButton" type="button">Сохранить overrides</button>
+          </div>
+        </div>
+        <div class="editor-toolbar">
+          <div class="editor-group wide">
+            <label class="field-label" for="titleInput">Название схемы</label>
+            <input id="titleInput" type="text" placeholder="Название схемы" disabled />
+          </div>
+          <div class="editor-group wide">
+            <label class="field-label" for="codeSelect">Код для новой метки</label>
+            <select id="codeSelect" disabled></select>
+            <div id="selectedCodeMeta" class="meta">Режим редактирования выключен.</div>
+          </div>
+          <div class="editor-group actions">
+            <button id="deleteMarkerButton" type="button" disabled>Удалить выбранную метку</button>
+            <div id="saveStatus" class="meta">Только просмотр</div>
+          </div>
+        </div>
+        <div id="viewer" class="viewer">
+          <img id="schemeImage" alt="Схема" />
+          <div id="overlay" class="overlay"></div>
+        </div>
+      </section>
+
+      <section class="details-panel">
+        <div class="details-header">
+          <div>
+            <h3 id="selectionTitle">Деталь не выбрана</h3>
+            <div id="selectionMeta" class="meta"></div>
+          </div>
+          <div id="editorHint" class="hint">Включите Edit mode для правок.</div>
+        </div>
+        <div class="details-grid">
+          <div class="details-column">
+            <div id="rowsContainer" class="rows-container"></div>
+            <div id="unmatchedContainer" class="unmatched-container"></div>
+          </div>
+          <aside id="markerEditor" class="marker-editor is-empty">
+            <div class="section-title">Редактор метки</div>
+            <label class="field-label" for="markerLabelInput">Подпись</label>
+            <input id="markerLabelInput" type="text" />
+            <label class="field-label" for="markerCodeInput">Код детали</label>
+            <input id="markerCodeInput" type="text" />
+            <div class="coords-grid">
+              <label><span>X</span><input id="markerXInput" type="number" /></label>
+              <label><span>Y</span><input id="markerYInput" type="number" /></label>
+              <label><span>W</span><input id="markerWInput" type="number" /></label>
+              <label><span>H</span><input id="markerHInput" type="number" /></label>
+            </div>
+            <div class="section-title small">Строки детали</div>
+            <div id="markerRowsPreview" class="marker-rows-preview"></div>
+          </aside>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

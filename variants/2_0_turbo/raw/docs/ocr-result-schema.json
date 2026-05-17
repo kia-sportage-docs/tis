@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/ocr-result-schema.json",
+  "title": "TIS OCR Chunk Result",
+  "type": "object",
+  "required": ["range", "pages"],
+  "properties": {
+    "range": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "integer", "minimum": 1 }
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["page", "type", "name", "ocr_md"],
+        "properties": {
+          "page": { "type": "integer", "minimum": 1 },
+          "type": { "type": "string", "enum": ["table", "scheme"] },
+          "name": {
+            "anyOf": [
+              { "type": "string" },
+              { "type": "null" }
+            ]
+          },
+          "ocr_md": { "type": "string" }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": { "type": { "const": "table" } },
+              "required": ["type"]
+            },
+            "then": {
+              "properties": {
+                "name": { "type": "null" },
+                "ocr_md": { "type": "string", "minLength": 1 }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": { "type": { "const": "scheme" } },
+              "required": ["type"]
+            },
+            "then": {
+              "properties": {
+                "name": { "type": "string", "minLength": 1 },
+                "ocr_md": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
