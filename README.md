@@ -74,7 +74,7 @@ GitHub Actions делает следующее:
 
 ### Запуск editor
 ```bash
-cd /home/hellsman/.openclaw/workspace/tmp/tis-result/site
+cd site
 ./serve.sh
 ```
 
@@ -83,13 +83,13 @@ cd /home/hellsman/.openclaw/workspace/tmp/tis-result/site
 
 ### Локальная сборка publish
 ```bash
-cd /home/hellsman/.openclaw/workspace/tmp/tis-result/site
+cd site
 python3 build_publish.py
 ```
 
 ### Локальная проверка publish
 ```bash
-cd /home/hellsman/.openclaw/workspace/tmp/tis-result/site
+cd site
 bash ./serve_publish.sh
 ```
 
