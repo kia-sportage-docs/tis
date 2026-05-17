@@ -20,6 +20,11 @@ export function initCatalogApp(options = {}) {
     saveStatus: document.getElementById('saveStatus'),
     variantSelect: document.getElementById('variantSelect'),
     variantSummary: document.getElementById('variantSummary'),
+    openDocTableButton: document.getElementById('openDocTableButton'),
+    closeDocTableButton: document.getElementById('closeDocTableButton'),
+    docTableModal: document.getElementById('docTableModal'),
+    docTableContainer: document.getElementById('docTableContainer'),
+    docTableTitle: document.getElementById('docTableTitle'),
   };
 
   const state = {
@@ -80,6 +85,12 @@ export function initCatalogApp(options = {}) {
     window.addEventListener('resize', () => {
       if (state.currentDoc) syncOverlaySize();
       renderMarkers();
+    });
+
+    els.openDocTableButton?.addEventListener('click', openDocTableModal);
+    els.closeDocTableButton?.addEventListener('click', closeDocTableModal);
+    document.querySelectorAll('[data-close-modal="doc-table"]').forEach((el) => {
+      el.addEventListener('click', closeDocTableModal);
     });
   }
 
@@ -314,6 +325,70 @@ export function initCatalogApp(options = {}) {
     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  function buildDocRows(doc) {
+    const rows = [];
+    const seen = new Set();
+    for (const marker of doc?.markers || []) {
+      for (const row of marker.rows || []) {
+        const key = row.id || `${row.code}|${row.part_number}|${row.name}|${row.qty}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        rows.push({ ...row, __matchStatus: 'matched' });
+      }
+    }
+    for (const item of doc?.unmatched_codes || []) {
+      for (const row of item.rows || []) {
+        const key = row.id || `${row.code}|${row.part_number}|${row.name}|${row.qty}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        rows.push({ ...row, __matchStatus: 'unmatched' });
+      }
+    }
+    return rows;
+  }
+
+  function renderDocTableModal() {
+    if (!els.docTableContainer || !els.docTableTitle) return;
+    const doc = state.currentDoc;
+    if (!doc) {
+      els.docTableTitle.textContent = 'Схема не выбрана';
+      els.docTableContainer.innerHTML = '<div class="empty">Сначала выберите схему.</div>';
+      return;
+    }
+    const rows = buildDocRows(doc);
+    els.docTableTitle.textContent = `${doc.title} · строк: ${rows.length}`;
+    if (!rows.length) {
+      els.docTableContainer.innerHTML = '<div class="empty">Для этой схемы нет строк таблицы.</div>';
+      return;
+    }
+    els.docTableContainer.innerHTML = `
+      <table class="doc-table-all">
+        <thead><tr><th>Код</th><th>Номер детали</th><th>Наименование</th><th>Кол-во</th></tr></thead>
+        <tbody>
+          ${rows.map((row) => `
+            <tr class="${row.__matchStatus === 'unmatched' ? 'row-unmatched' : ''}">
+              <td><span class="badge">${escapeHtml(row.code || '—')}</span></td>
+              <td>${escapeHtml(row.part_number || '—')}</td>
+              <td>${escapeHtml(row.name || '—')}</td>
+              <td>${escapeHtml(row.qty || '—')}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+
+  function openDocTableModal() {
+    if (!els.docTableModal) return;
+    renderDocTableModal();
+    els.docTableModal.hidden = false;
+  }
+
+  function closeDocTableModal() {
+    if (!els.docTableModal) return;
+    els.docTableModal.hidden = true;
+  }
+
   function renderUnmatched() {
     const doc = state.currentDoc;
     if (!doc || !els.unmatchedContainer) return;
@@ -445,6 +520,10 @@ export function initCatalogApp(options = {}) {
     renderSelection,
     renderUnmatched,
     scrollToDetails,
+    buildDocRows,
+    renderDocTableModal,
+    openDocTableModal,
+    closeDocTableModal,
     syncOverlaySize,
     selectDocument,
     buildDocTree,
