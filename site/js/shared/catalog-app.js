@@ -408,12 +408,15 @@ export function initCatalogApp(options = {}) {
 
   function normalizeOverrides(overrides) {
     if (overrides && typeof overrides === 'object' && typeof overrides.documents === 'object') {
-      return {
+      const normalized = {
         documents: overrides.documents || {},
-        categories: Array.isArray(overrides.categories) ? overrides.categories : [],
       };
+      if (Array.isArray(overrides.categories)) {
+        normalized.categories = overrides.categories;
+      }
+      return normalized;
     }
-    return { documents: {}, categories: [] };
+    return { documents: {} };
   }
 
   function mergeCatalogWithOverrides(catalog, overrides) {
@@ -436,7 +439,11 @@ export function initCatalogApp(options = {}) {
       }
       recalcDocStats(doc);
     }
-    merged.categories = Array.isArray(overrides.categories) ? overrides.categories : [];
+    if (Array.isArray(overrides.categories)) {
+      merged.categories = overrides.categories;
+    } else if (!Array.isArray(merged.categories)) {
+      merged.categories = [];
+    }
     return merged;
   }
 

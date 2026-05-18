@@ -13,7 +13,7 @@ const state = {
 };
 
 const els = {
-  editToggle: document.getElementById('editToggle'),
+  editToggleButton: document.getElementById('editToggleButton'),
   undoButton: document.getElementById('undoButton'),
   redoButton: document.getElementById('redoButton'),
   saveButton: document.getElementById('saveButton'),
@@ -97,8 +97,8 @@ const app = initCatalogApp({
 bindEditorEvents();
 
 function bindEditorEvents() {
-  els.editToggle.addEventListener('change', () => {
-    state.editMode = els.editToggle.checked;
+  els.editToggleButton.addEventListener('click', () => {
+    state.editMode = !state.editMode;
     renderToolbarState();
     app.helpers.renderMarkers();
     app.helpers.renderUnmatched();
@@ -130,6 +130,10 @@ function bindEditorEvents() {
 
   els.categorySelect.addEventListener('change', () => {
     assignCurrentDocToCategory(els.categorySelect.value);
+  });
+
+  els.manageCategorySelect.addEventListener('change', () => {
+    renderToolbarState();
   });
 
   els.addCategoryButton.addEventListener('click', addCategory);
@@ -182,6 +186,9 @@ function renderToolbarState() {
   els.renameCategoryButton.disabled = !state.editMode || !els.manageCategorySelect.value;
   els.deleteCategoryButton.disabled = !state.editMode || !els.manageCategorySelect.value;
   els.deleteMarkerButton.disabled = !state.editMode || !app.helpers.getCurrentMarker();
+  els.editToggleButton.setAttribute('aria-pressed', state.editMode ? 'true' : 'false');
+  els.editToggleButton.classList.toggle('is-active', state.editMode);
+  els.editToggleButton.textContent = state.editMode ? 'Режим редактирования: активен' : 'Режим редактирования';
   document.body.classList.toggle('edit-mode', state.editMode);
 }
 
@@ -283,7 +290,7 @@ function renderMarkerEditor() {
     els.markerWInput.value = '';
     els.markerHInput.value = '';
     document.getElementById('markerRowsPreview').innerHTML = '<div class="empty">Выберите метку для точной правки координат и размера.</div>';
-    els.editorHint.textContent = state.editMode ? 'Можно перетаскивать метку мышью и тянуть за угол.' : 'Включите Edit mode для правок.';
+    els.editorHint.textContent = state.editMode ? 'Можно перетаскивать метку мышью и тянуть за угол.' : 'Включите режим редактирования для правок.';
     return;
   }
   els.markerEditor.classList.remove('is-empty');

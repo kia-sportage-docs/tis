@@ -23,6 +23,36 @@ button, input, select {
 button {
   cursor: pointer;
 }
+input, select, button {
+  min-width: 0;
+}
+.app-shell {
+  min-height: 100vh;
+}
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 16px;
+  padding: 16px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+.topbar h1 {
+  margin: 0 0 6px;
+  font-size: 20px;
+}
+.variant-picker {
+  width: min(100%, 360px);
+  flex: 0 1 360px;
+}
+.variant-picker select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: white;
+}
 .app {
   display: grid;
   grid-template-columns: 320px 1fr;
@@ -146,23 +176,24 @@ button {
   display: flex;
   align-items: center;
   gap: 12px;
-}
-.toggle {
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
-  font-size: 14px;
+  flex-wrap: wrap;
 }
 #saveButton,
 #undoButton,
 #redoButton,
 #deleteMarkerButton,
 #openDocTableButton,
-#closeDocTableButton {
+#closeDocTableButton,
+#editToggleButton {
   border: 1px solid var(--line);
   background: white;
   padding: 10px 14px;
   border-radius: 10px;
+}
+#editToggleButton.is-active {
+  color: white;
+  border-color: var(--accent);
+  background: var(--accent);
 }
 #deleteMarkerButton {
   color: var(--danger);
@@ -172,7 +203,8 @@ button {
 #undoButton:disabled,
 #redoButton:disabled,
 #saveButton:disabled,
-#deleteMarkerButton:disabled {
+#deleteMarkerButton:disabled,
+#editToggleButton:disabled {
   opacity: 0.55;
   cursor: default;
 }
@@ -201,11 +233,15 @@ button {
 }
 .category-editor-row {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 8px;
+  align-items: stretch;
+}
+.category-editor-row > * {
+  min-width: 0;
 }
 .category-editor-row--triple {
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   margin-top: 8px;
 }
 .category-editor-row button {
@@ -213,6 +249,10 @@ button {
   background: white;
   border-radius: 10px;
   padding: 10px 14px;
+  white-space: nowrap;
+  min-width: 48px;
+  font-size: 18px;
+  line-height: 1;
 }
 .viewer {
   position: relative;
@@ -417,6 +457,14 @@ body.edit-mode .overlay {
   background: #fff7e6;
 }
 @media (max-width: 1080px) {
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .variant-picker {
+    width: 100%;
+    flex-basis: auto;
+  }
   .app { grid-template-columns: 1fr; }
   .sidebar {
     min-height: auto;
@@ -424,4 +472,41 @@ body.edit-mode .overlay {
     max-height: 45vh;
   }
   .main { grid-template-rows: auto auto; }
+}
+
+@media (max-width: 720px) {
+  .topbar,
+  .sidebar-header,
+  .viewer-toolbar,
+  .details-header,
+  .editor-toolbar,
+  .rows-container,
+  .unmatched-container,
+  .marker-editor,
+  .modal-header,
+  .modal-body {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .category-editor-row,
+  .category-editor-row--triple,
+  .toolbar-actions,
+  .viewer-toolbar,
+  .modal-header {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .category-editor-row button,
+  .toolbar-actions > button,
+  .toolbar-actions .toggle {
+    width: 100%;
+  }
+  .sidebar {
+    max-height: none;
+  }
+  .main {
+    padding: 8px;
+    gap: 8px;
+  }
 }

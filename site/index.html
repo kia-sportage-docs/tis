@@ -29,13 +29,13 @@
             <label class="field-label" for="categoryNameInput">Новая категория</label>
             <div class="category-editor-row">
               <input id="categoryNameInput" type="text" placeholder="Например, Двигатель" />
-              <button id="addCategoryButton" type="button">Добавить</button>
+              <button id="addCategoryButton" type="button" title="Добавить категорию" aria-label="Добавить категорию">＋</button>
             </div>
             <label class="field-label" for="manageCategorySelect">Управление категорией</label>
             <div class="category-editor-row category-editor-row--triple">
               <select id="manageCategorySelect"></select>
-              <button id="renameCategoryButton" type="button">Переименовать</button>
-              <button id="deleteCategoryButton" type="button">Удалить</button>
+              <button id="renameCategoryButton" type="button" title="Переименовать категорию" aria-label="Переименовать категорию">✎</button>
+              <button id="deleteCategoryButton" type="button" title="Удалить категорию" aria-label="Удалить категорию">🗑</button>
             </div>
           </div>
         </div>
@@ -51,13 +51,10 @@
             </div>
             <div class="toolbar-actions">
               <button id="openDocTableButton" type="button">Таблица схемы</button>
-              <label class="toggle">
-                <input id="editToggle" type="checkbox" />
-                <span>Edit mode</span>
-              </label>
+              <button id="editToggleButton" type="button" aria-pressed="false">Режим редактирования</button>
               <button id="undoButton" type="button">Undo</button>
               <button id="redoButton" type="button">Redo</button>
-              <button id="saveButton" type="button">Сохранить overrides</button>
+              <button id="saveButton" type="button">Сохранить</button>
             </div>
           </div>
           <div class="editor-toolbar">
@@ -89,7 +86,7 @@
               <h3 id="selectionTitle">Деталь не выбрана</h3>
               <div id="selectionMeta" class="meta"></div>
             </div>
-            <div id="editorHint" class="hint">Включите Edit mode для правок.</div>
+            <div id="editorHint" class="hint">Включите режим редактирования для правок.</div>
           </div>
           <div class="details-grid">
             <div class="details-column">
