@@ -325,6 +325,12 @@ export function initCatalogApp(options = {}) {
     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  function getEffectiveUnmatchedCodes(doc) {
+    if (!doc) return [];
+    const matched = new Set((doc.markers || []).map((marker) => marker.code).filter(Boolean));
+    return (doc.unmatched_codes || []).filter((item) => !matched.has(item.code));
+  }
+
   function buildDocRows(doc) {
     const rows = [];
     const seen = new Set();
@@ -336,7 +342,7 @@ export function initCatalogApp(options = {}) {
         rows.push({ ...row, __matchStatus: 'matched' });
       }
     }
-    for (const item of doc?.unmatched_codes || []) {
+    for (const item of getEffectiveUnmatchedCodes(doc)) {
       for (const row of item.rows || []) {
         const key = row.id || `${row.code}|${row.part_number}|${row.name}|${row.qty}`;
         if (seen.has(key)) continue;
@@ -392,7 +398,7 @@ export function initCatalogApp(options = {}) {
   function renderUnmatched() {
     const doc = state.currentDoc;
     if (!doc || !els.unmatchedContainer) return;
-    const unmatched = doc.unmatched_codes || [];
+    const unmatched = getEffectiveUnmatchedCodes(doc);
     els.unmatchedContainer.innerHTML = `
       <div class="section-title">Нераспознанные коды: ${unmatched.length}</div>
       <div class="unmatched-grid">
@@ -453,12 +459,17 @@ export function initCatalogApp(options = {}) {
   }
 
   function recalcDocStats(doc) {
-    const matched = new Set((doc.markers || []).map((marker) => marker.code));
+    const matched = new Set((doc.markers || []).map((marker) => marker.code).filter(Boolean));
+    const unmatched = getEffectiveUnmatchedCodes(doc);
+    const totalCodes = doc.stats?.total_codes ?? new Set([
+      ...matched,
+      ...(doc.unmatched_codes || []).map((item) => item.code).filter(Boolean),
+    ]).size;
     doc.stats = {
       ...doc.stats,
-      total_codes: matched.size + (doc.unmatched_codes || []).length,
-      matched_codes: matched.size,
-      unmatched_codes: (doc.unmatched_codes || []).length,
+      total_codes: totalCodes,
+      matched_codes: totalCodes - unmatched.length,
+      unmatched_codes: unmatched.length,
     };
   }
 
