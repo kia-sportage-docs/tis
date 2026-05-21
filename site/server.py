@@ -13,7 +13,7 @@ VARIANTS_PATH = DATA_DIR / 'variants.json'
 CATALOGS_DIR = DATA_DIR / 'catalogs'
 OVERRIDES_DIR = DATA_DIR / 'overrides'
 HOST = '0.0.0.0'
-PORT = 8000
+PORT = 8001
 
 
 def get_variants_payload():
