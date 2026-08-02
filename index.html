@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TIS Parts Catalog</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="publish-mode">
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <h1>TIS каталог</h1>
+        <div class="meta">KIA Sportage NQ5c · publish-версия</div>
+      </div>
+      <div class="variant-picker">
+        <label class="field-label" for="variantSelect">Комплектация</label>
+        <select id="variantSelect"></select>
+      </div>
+    </header>
+
+    <div class="app">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div id="variantSummary" class="summary">Загрузка комплектаций...</div>
+          <input id="searchInput" type="search" placeholder="Поиск по названию/коду" />
+          <div id="summary" class="summary">Загрузка...</div>
+        </div>
+        <div id="docList" class="doc-list"></div>
+      </aside>
+
+      <main class="main">
+        <section class="viewer-panel">
+          <div class="viewer-toolbar viewer-toolbar--publish">
+            <div>
+              <h2 id="docTitle">—</h2>
+              <div id="docMeta" class="meta"></div>
+            </div>
+            <div class="toolbar-actions toolbar-actions--publish">
+              <button id="openDocTableButton" type="button">Таблица схемы</button>
+              <div id="saveStatus" class="meta">Read-only publish version</div>
+            </div>
+          </div>
+          <div id="viewer" class="viewer">
+            <img id="schemeImage" alt="Схема" />
+            <div id="overlay" class="overlay"></div>
+          </div>
+        </section>
+
+        <section class="details-panel">
+          <div class="details-header">
+            <div>
+              <h3 id="selectionTitle">Деталь не выбрана</h3>
+              <div id="selectionMeta" class="meta"></div>
+            </div>
+            <div id="editorHint" class="hint">Это publish-версия только для просмотра.</div>
+          </div>
+          <div class="details-grid details-grid--publish">
+            <div class="details-column">
+              <div id="rowsContainer" class="rows-container"></div>
+              <div id="unmatchedContainer" class="unmatched-container"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div id="docTableModal" class="modal" hidden>
+    <div class="modal-backdrop" data-close-modal="doc-table"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <div class="section-title">Таблица схемы</div>
+          <div id="docTableTitle" class="meta">—</div>
+        </div>
+        <button id="closeDocTableButton" type="button">Закрыть</button>
+      </div>
+      <div id="docTableContainer" class="modal-body"></div>
+    </div>
+  </div>
+
+  <script type="module" src="js/publish/app.js"></script>
+</body>
+</html>
